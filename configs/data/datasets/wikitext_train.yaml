@@ -1,0 +1,9 @@
+wikitext_train:
+  handler: PretrainingDataset
+  args:
+    hf_args:
+      path: "Salesforce/wikitext"
+      name: "wikitext-2-raw-v1"
+      split: "train"
+    text_key: "text"
+    max_length: 256

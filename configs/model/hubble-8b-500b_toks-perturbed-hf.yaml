@@ -1,0 +1,12 @@
+model_args:
+  pretrained_model_name_or_path: /project2/robinjia_875/xzhu9839/unlearn/hubble/models/hubble-8b-500b_toks-perturbed-hf
+  attn_implementation: 'flash_attention_2'
+  torch_dtype: bfloat16
+tokenizer_args:
+  pretrained_model_name_or_path: /project2/robinjia_875/xzhu9839/unlearn/hubble/models/hubble-8b-500b_toks-perturbed-hf
+template_args: 
+  apply_chat_template: False
+  user_start_tag: ""
+  user_end_tag: ""
+  asst_start_tag: "" 
+  asst_end_tag: ""

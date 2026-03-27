@@ -1,0 +1,30 @@
+# @package _global_
+
+defaults:
+  - override /model: hubble-8b-500b_toks-perturbed-hf
+  - override /trainer: SatImp
+  - override /data: unlearn
+  - override /data/datasets@data.forget: hubble_mmlu-train-unlearn-256
+  - override /data/datasets@data.retain: hubble_mmlu-train-keep-256
+  - override /eval: lm_eval
+
+collator:
+  DataCollatorForSupervisedDataset:
+    args:
+      padding_side: left # Usually left but for mistral and zephyr its right (https://github.com/hongshi97/CAD/issues/2)
+
+forget_split: train
+retain_split: train
+retain_logs_path: null
+
+data:
+  anchor: forget
+
+trainer:
+  args:
+    per_device_train_batch_size: 1
+    gradient_accumulation_steps: 16
+    learning_rate: 5e-5
+    lr_scheduler_type: constant
+
+task_name: mmlu_keep

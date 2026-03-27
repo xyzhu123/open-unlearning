@@ -1,0 +1,9 @@
+hubble_gutenberg-train-keep-256:
+  handler: PretrainingDataset
+  args:
+    hf_args:
+      path: "json"
+      data_files: "/project2/robinjia_875/xzhu9839/unlearn/hubble/data/passages_gutenberg_unpopular-train-keep-256.json"
+      split: "train"
+    text_key: "text"
+    max_length: 256

@@ -3,7 +3,7 @@ from omegaconf import DictConfig
 from data import get_data, get_collators
 from model import get_model
 from trainer import load_trainer
-from evals import get_evaluators
+# from evals import get_evaluators
 from trainer.utils import seed_everything
 
 
@@ -22,6 +22,8 @@ def main(cfg: DictConfig):
 
     # Load Dataset
     data_cfg = cfg.data
+
+    # import pdb; pdb.set_trace()
     data = get_data(
         data_cfg, mode=mode, tokenizer=tokenizer, template_args=template_args
     )
@@ -35,15 +37,15 @@ def main(cfg: DictConfig):
     assert trainer_cfg is not None, ValueError("Please set trainer")
 
     # Get Evaluators
-    evaluators = None
-    eval_cfgs = cfg.get("eval", None)
-    if eval_cfgs:
-        evaluators = get_evaluators(
-            eval_cfgs=eval_cfgs,
-            template_args=template_args,
-            model=model,
-            tokenizer=tokenizer,
-        )
+    # evaluators = None
+    # eval_cfgs = cfg.get("eval", None)
+    # if eval_cfgs:
+    #     evaluators = get_evaluators(
+    #         eval_cfgs=eval_cfgs,
+    #         template_args=template_args,
+    #         model=model,
+    #         tokenizer=tokenizer,
+    #     )
 
     trainer, trainer_args = load_trainer(
         trainer_cfg=trainer_cfg,
@@ -52,17 +54,20 @@ def main(cfg: DictConfig):
         eval_dataset=data.get("eval", None),
         tokenizer=tokenizer,
         data_collator=collator,
-        evaluators=evaluators,
+        evaluators=None,
         template_args=template_args,
     )
+
+
 
     if trainer_args.do_train:
         trainer.train()
         trainer.save_state()
         trainer.save_model(trainer_args.output_dir)
+        print(f"Trained checkpoint saved to {trainer_args.output_dir}")
 
-    if trainer_args.do_eval:
-        trainer.evaluate(metric_key_prefix="eval")
+    # if trainer_args.do_eval:
+    #     trainer.evaluate(metric_key_prefix="eval")
 
 
 if __name__ == "__main__":
